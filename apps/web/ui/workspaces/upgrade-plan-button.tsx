@@ -1,6 +1,6 @@
 "use client";
 
-import { getStripe } from "@/lib/stripe/client";
+import FlutterwaveCheckout from "@/components/billing/flutterwave-checkout";
 import useWorkspace from "@/lib/swr/use-workspace";
 import { Button } from "@dub/ui";
 import { APP_DOMAIN, capitalize, SELF_SERVE_PAID_PLANS } from "@dub/utils";
@@ -31,10 +31,25 @@ export function UpgradePlanButton({
     ) ?? SELF_SERVE_PAID_PLANS[0];
 
   const [clicked, setClicked] = useState(false);
+  const [checkoutData, setCheckoutData] = useState(null);
 
   const queryString = searchParams.toString();
 
   const isCurrentPlan = currentPlan === selectedPlan.name.toLowerCase();
+
+  if (checkoutData) {
+    return (
+      <FlutterwaveCheckout
+        userId={checkoutData.userId}
+        email={checkoutData.email}
+        name={checkoutData.name}
+        plan={plan}
+        period={period}
+        baseUrl={checkoutData.baseUrl}
+        onboarding={checkoutData.onboarding}
+      />
+    );
+  }
 
   return (
     <Button
@@ -67,15 +82,9 @@ export function UpgradePlanButton({
               currentPlan: capitalize(plan),
               newPlan: selectedPlan.name,
             });
-            if (currentPlan === "free") {
-              const data = await res.json();
-              const { id: sessionId } = data;
-              const stripe = await getStripe();
-              stripe?.redirectToCheckout({ sessionId });
-            } else {
-              const { url } = await res.json();
-              router.push(url);
-            }
+            
+            const data = await res.json();
+            setCheckoutData(data);
           })
           .catch((err) => {
             alert(err);

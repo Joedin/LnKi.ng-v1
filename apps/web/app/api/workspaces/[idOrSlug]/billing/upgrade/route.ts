@@ -1,98 +1,28 @@
+import { DubApiError } from "@/lib/api/errors";
 import { withWorkspace } from "@/lib/auth";
-import { getDubCustomer } from "@/lib/dub";
-import { stripe } from "@/lib/stripe";
 import { APP_DOMAIN } from "@dub/utils";
 import { NextResponse } from "next/server";
 
 export const POST = withWorkspace(async ({ req, workspace, session }) => {
   let { plan, period, baseUrl, onboarding } = await req.json();
 
-  if (!plan || !period) {
-    return new Response("Invalid plan or period", { status: 400 });
-  }
-
-  plan = plan.replace(" ", "+");
-
-  const prices = await stripe.prices.list({
-    lookup_keys: [`${plan}_${period}`],
-  });
-
-  const activeSubscription = workspace.stripeId
-    ? await stripe.subscriptions
-        .list({
-          customer: workspace.stripeId,
-          status: "active",
-        })
-        .then((res) => res.data[0])
-    : null;
-
-  // if the user has an active subscription, create billing portal to upgrade
-  if (workspace.stripeId && activeSubscription) {
-    const { url } = await stripe.billingPortal.sessions.create({
-      customer: workspace.stripeId,
-      return_url: baseUrl,
-      flow_data: {
-        type: "subscription_update_confirm",
-        subscription_update_confirm: {
-          subscription: activeSubscription.id,
-          items: [
-            {
-              id: activeSubscription.items.data[0].id,
-              quantity: 1,
-              price: prices.data[0].id,
-            },
-          ],
-        },
-      },
+  try {
+    // Return the details needed to initiate Flutterwave checkout
+    // The actual checkout will be handled client-side
+    return NextResponse.json({
+      userId: session.user.id,
+      email: session.user.email,
+      name: session.user.name,
+      plan,
+      period,
+      flutterwavePublicKey: process.env.FLUTTERWAVE_PUBLIC_KEY,
+      baseUrl: baseUrl || `${APP_DOMAIN}/${workspace.slug}`,
+      onboarding: !!onboarding,
     });
-    return NextResponse.json({ url });
-  } else {
-    const customer = await getDubCustomer(session.user.id);
-
-    // For both new users and users with canceled subscriptions
-    const stripeSession = await stripe.checkout.sessions.create({
-      ...(workspace.stripeId
-        ? {
-            customer: workspace.stripeId,
-            // need to pass this or Stripe will throw an error: https://git.new/kX4fi6B
-            customer_update: {
-              name: "auto",
-              address: "auto",
-            },
-          }
-        : {
-            customer_email: session.user.email,
-          }),
-      billing_address_collection: "required",
-      success_url: `${APP_DOMAIN}/${workspace.slug}?${onboarding ? "onboarded" : "upgraded"}=true&plan=${plan}&period=${period}`,
-      cancel_url: baseUrl,
-      line_items: [{ price: prices.data[0].id, quantity: 1 }],
-      ...(customer?.discount?.couponId
-        ? {
-            discounts: [
-              {
-                coupon:
-                  process.env.NODE_ENV !== "production" &&
-                  customer.discount.couponTestId
-                    ? customer.discount.couponTestId
-                    : customer.discount.couponId,
-              },
-            ],
-          }
-        : { allow_promotion_codes: true }),
-      automatic_tax: {
-        enabled: true,
-      },
-      tax_id_collection: {
-        enabled: true,
-      },
-      mode: "subscription",
-      client_reference_id: workspace.id,
-      metadata: {
-        dubCustomerId: session.user.id,
-      },
+  } catch (error) {
+    throw new DubApiError({
+      code: "bad_request",
+      message: error.message || "Failed to initiate checkout",
     });
-
-    return NextResponse.json(stripeSession);
   }
 });
