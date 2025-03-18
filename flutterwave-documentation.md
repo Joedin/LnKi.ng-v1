@@ -32,7 +32,7 @@ const subscriptionPlans = {
         planId: 'pro_monthly_ngn'
       },
       USD: {
-        amount: 24,       // $24/month
+        amount: 15,       // $15/month
         planId: 'pro_monthly_usd'
       }
     },
@@ -42,7 +42,7 @@ const subscriptionPlans = {
         planId: 'pro_yearly_ngn'
       },
       USD: {
-        amount: 228,      // $228/year ($19/month)
+        amount: 144,      // $144/year ($12/month)
         planId: 'pro_yearly_usd'
       }
     }
@@ -50,21 +50,21 @@ const subscriptionPlans = {
   business: {
     monthly: {
       NGN: {
-        amount: 24190,    // ₦24,190/month (equivalent to $59)
+        amount: 25000,    // ₦25,000/month
         planId: 'business_monthly_ngn'
       },
       USD: {
-        amount: 59,       // $59/month
+        amount: 37,       // $37/month
         planId: 'business_monthly_usd'
       }
     },
     yearly: {
       NGN: {
-        amount: 241900,   // ₦241,900/year (₦20,158/month)
+        amount: 240000,   // ₦240,000/year (₦20,000/month)
         planId: 'business_yearly_ngn'
       },
       USD: {
-        amount: 588,      // $588/year ($49/month)
+        amount: 355,      // $355/year ($29.58/month)
         planId: 'business_yearly_usd'
       }
     }
@@ -72,21 +72,21 @@ const subscriptionPlans = {
   businessPlus: {
     monthly: {
       NGN: {
-        amount: 48790,    // ₦48,790/month (equivalent to $119)
+        amount: 50000,    // ₦50,000/month
         planId: 'business_plus_monthly_ngn'
       },
       USD: {
-        amount: 119,      // $119/month
+        amount: 75,       // $75/month
         planId: 'business_plus_monthly_usd'
       }
     },
     yearly: {
       NGN: {
-        amount: 487900,   // ₦487,900/year (₦40,658/month)
+        amount: 480000,   // ₦480,000/year (₦40,000/month)
         planId: 'business_plus_yearly_ngn'
       },
       USD: {
-        amount: 1188,     // $1,188/year ($99/month)
+        amount: 720,      // $720/year ($60/month)
         planId: 'business_plus_yearly_usd'
       }
     }
@@ -94,21 +94,21 @@ const subscriptionPlans = {
   businessExtra: {
     monthly: {
       NGN: {
-        amount: 102090,   // ₦102,090/month (equivalent to $249)
+        amount: 105000,   // ₦105,000/month
         planId: 'business_extra_monthly_ngn'
       },
       USD: {
-        amount: 249,      // $249/month
+        amount: 155,      // $155/month
         planId: 'business_extra_monthly_usd'
       }
     },
     yearly: {
       NGN: {
-        amount: 979200,   // ₦979,200/year (₦81,600/month)
+        amount: 1008000,  // ₦1,008,000/year (₦84,000/month)
         planId: 'business_extra_yearly_ngn'
       },
       USD: {
-        amount: 2388,     // $2,388/year ($199/month)
+        amount: 1488,     // $1,488/year ($124/month)
         planId: 'business_extra_yearly_usd'
       }
     }
@@ -116,21 +116,21 @@ const subscriptionPlans = {
   businessMax: {
     monthly: {
       NGN: {
-        amount: 204590,   // ₦204,590/month (equivalent to $499)
+        amount: 205000,   // ₦205,000/month
         planId: 'business_max_monthly_ngn'
       },
       USD: {
-        amount: 499,      // $499/month
+        amount: 312,      // $312/month
         planId: 'business_max_monthly_usd'
       }
     },
     yearly: {
       NGN: {
-        amount: 1963200,  // ₦1,963,200/year (₦163,600/month)
+        amount: 1968000,  // ₦1,968,000/year (₦164,000/month)
         planId: 'business_max_yearly_ngn'
       },
       USD: {
-        amount: 4788,     // $4,788/year ($399/month)
+        amount: 2995,     // $2,995/year ($249.58/month)
         planId: 'business_max_yearly_usd'
       }
     }

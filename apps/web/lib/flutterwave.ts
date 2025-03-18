@@ -248,51 +248,51 @@ export function getPriceForDisplay(planName: string, interval: 'monthly' | 'year
     pro: {
       monthly: {
         NGN: 10000,
-        USD: 24
+        USD: 15
       },
       yearly: {
         NGN: 96000,
-        USD: 228
+        USD: 144
       }
     },
     business: {
       monthly: {
-        NGN: 24190,
-        USD: 59
+        NGN: 25000,
+        USD: 37
       },
       yearly: {
-        NGN: 241900,
-        USD: 588
+        NGN: 240000,
+        USD: 355
       }
     },
     businessPlus: {
       monthly: {
-        NGN: 48790,
-        USD: 119
+        NGN: 50000,
+        USD: 75
       },
       yearly: {
-        NGN: 487900,
-        USD: 1188
+        NGN: 480000,
+        USD: 720
       }
     },
     businessExtra: {
       monthly: {
-        NGN: 102090,
-        USD: 249
+        NGN: 105000,
+        USD: 155
       },
       yearly: {
-        NGN: 979200,
-        USD: 2388
+        NGN: 1008000,
+        USD: 1488
       }
     },
     businessMax: {
       monthly: {
-        NGN: 204590,
-        USD: 499
+        NGN: 205000,
+        USD: 312
       },
       yearly: {
-        NGN: 1963200,
-        USD: 4788
+        NGN: 1968000,
+        USD: 2995
       }
     }
   };
